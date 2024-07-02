@@ -1,10 +1,3 @@
-read -p "Enter github token: " github_token
-
-if [ -z "$github_token" ]; then
-    echo "Github token cannot be empty"
-    exit 1
-fi
-
 cd
 # Enable sudo
 sudo echo "sudo enabled"
@@ -17,15 +10,16 @@ if [ "$confirmation" != "yes" ]; then
     exit 1
 fi
 
-github_base_url="https://$github_token@github.com"
-
 cd thingsboard
 git pull origin release-3.6
-make up
+make prod-up > thingsboard.log 2>&1 &
 
 cd
+
 cd astrikos-workspace
-make up
+git pull origin master
+git submodule update --init --recursive
+make prod-up > astrikos.log 2>&1 &
 
 cd
 

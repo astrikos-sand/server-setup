@@ -71,13 +71,7 @@ sudo apt install nginx -y
 
 # Install Java 11 for Thingsboard
 sudo apt install openjdk-11-jdk -y
-
-# Install Conda
-mkdir -p ~/miniconda3
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-rm -rf ~/miniconda3/miniconda.sh
-~/miniconda3/bin/conda init bash
+sudo apt install maven -y
 
 # endregion scripts/install.sh
 
@@ -124,9 +118,9 @@ if ! command -v java &> /dev/null; then
   echo "Java 11 is not installed"
 fi
 
-# Conda
-if ! command -v conda &> /dev/null; then
-  echo "Conda is not installed"
+# Maven
+if ! command -v mvn &> /dev/null; then
+  echo "Maven is not installed"
 fi
 
 # endregion scripts/verify.sh
@@ -145,8 +139,20 @@ git clone "$github_base_url/$thingsboard_repo"
 # Workspace
 git clone "$github_base_url/$backend_repo"
 
+cd astrikos-workspace
+git submodule update --init --recursive
+
+cp ./astrikos/.env.sample ./astrikos/.env
+cp ./astrikos-worker/.env.sample ./astrikos-worker/.env
+
+cd
+
 # Nginx
-curl -o "/etc/nginx/astrikos.conf" "$nginx_url"
-sudo ln -s /etc/nginx/astrikos.conf /etc/nginx/sites-enabled/astrikos.conf
+sudo curl -o "/etc/nginx/sites-available/astrikos.conf" "$nginx_url"
+sudo ln -s /etc/nginx/sites-available/astrikos.conf /etc/nginx/sites-enabled/astrikos.conf
 sudo nginx -t
 sudo systemctl restart nginx
+
+echo "Project setup completed successfully, please configure the .env files in the workspace folders"
+
+# endregion project setup
