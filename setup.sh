@@ -7,10 +7,9 @@ exec > >(tee -i "setup.log") 2>&1
 
 # Constants
 server_name="sand" # :)
-backend_repo="nik-55/astrikos"
-worker_repo="anand817/astrikos-worker"
+backend_repo="anand817/astrikos-workspace"
 thingsboard_repo="photon0205/thingsboard"
-zip_frontend="https://drive.google.com/uc?export=download&id=1mRtRsDJ4TQoLV7s_XJvbYzCsQFhah2R5"
+nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/astrikos.conf"
 
 # Prompt user for github token
 read -p "Enter github token: " github_token
@@ -21,6 +20,7 @@ if [ -z "$github_token" ]; then
 fi
 
 # Enable sudo
+cd
 sudo echo "sudo enabled"
 
 # Prompt for confirmation to run the script
@@ -137,11 +137,16 @@ echo "Setup script executed successfully"
 
 # region project setup
 
-# Thingsboard Frontend
-curl -L -o temp.zip $zip_frontend
-sudo unzip -o temp.zip -d /var/www/html
-sudo rm -rf temp.zip
-sudo mv /var/www/html/dist /var/www/html/astrikos
+github_base_url="https://$github_token@github.com"
 
+# Thingsboard
+git clone "$github_base_url/$thingsboard_repo"
 
+# Workspace
+git clone "$github_base_url/$backend_repo"
 
+# Nginx
+curl -o "/etc/nginx/astrikos.conf" "$nginx_url"
+sudo ln -s /etc/nginx/astrikos.conf /etc/nginx/sites-enabled/astrikos.conf
+sudo nginx -t
+sudo systemctl restart nginx
