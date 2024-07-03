@@ -10,6 +10,7 @@ server_name="sand" # :)
 backend_repo="anand817/astrikos-workspace"
 thingsboard_repo="photon0205/thingsboard"
 nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/astrikos.conf"
+backend_nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/backend.conf"
 
 # Prompt user for github token
 read -p "Enter github token: " github_token
