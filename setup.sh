@@ -7,8 +7,8 @@ exec > >(tee -i "setup.log") 2>&1
 
 # Constants
 server_name="sand" # :)
-backend_repo="anand817/astrikos-workspace"
-thingsboard_repo="photon0205/thingsboard"
+backend_repo="astrikos-sand/flow-monorepo"
+thingsboard_repo="astrikos-sand/thingsboard"
 nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/astrikos.conf"
 backend_nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/backend.conf"
 
@@ -143,17 +143,19 @@ git clone "$github_base_url/$backend_repo"
 cd astrikos-workspace
 git submodule update --init --recursive
 
-cp ./astrikos/.env.sample ./astrikos/.env
-cp ./astrikos-worker/.env.sample ./astrikos-worker/.env
+cp ./astrikos/.env.setup ./astrikos/.env
+cp ./astrikos-worker/.env.setup ./astrikos-worker/.env
 
 cd
 
 # Nginx
 sudo curl -o "/etc/nginx/sites-available/astrikos.conf" "$nginx_url"
+sudo curl -o "/etc/nginx/sites-available/backend.conf" "$backend_nginx_url"
 sudo ln -s /etc/nginx/sites-available/astrikos.conf /etc/nginx/sites-enabled/astrikos.conf
+sudo ln -s /etc/nginx/sites-available/backend.conf /etc/nginx/sites-enabled/backend.conf
 sudo nginx -t
 sudo systemctl restart nginx
 
-echo "Project setup completed successfully, please configure the .env files in the workspace folders"
+echo "Project setup completed successfully"
 
 # endregion project setup
