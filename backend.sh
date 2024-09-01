@@ -1,4 +1,3 @@
-cd
 # Enable sudo
 sudo echo "sudo enabled"
 
@@ -10,17 +9,9 @@ if [ "$confirmation" != "yes" ]; then
     exit 1
 fi
 
-cd thingsboard
-git pull origin release-3.6
-make prod-up > thingsboard.log 2>&1 &
-
 cd
-
-cd astrikos-workspace
+cd flow-monorepo
 git pull origin master
 git submodule update --init --recursive
-make prod-up > astrikos.log 2>&1 &
-
-cd
-
-echo "Services updated"
+make prod-up
+make migrate

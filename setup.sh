@@ -9,8 +9,8 @@ exec > >(tee -i "setup.log") 2>&1
 server_name="sand" # :)
 backend_repo="astrikos-sand/flow-monorepo"
 thingsboard_repo="astrikos-sand/thingsboard"
-nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/astrikos.conf"
-backend_nginx_url="https://raw.githubusercontent.com/nik-55/astrikos-server-setup/master/backend.conf"
+nginx_url="https://raw.githubusercontent.com/astrikos-sand/server-setup/master/astrikos.conf"
+backend_nginx_url="https://raw.githubusercontent.com/astrikos-sand/server-setup/master/backend.conf"
 
 # Prompt user for github token
 read -p "Enter github token: " github_token
@@ -140,7 +140,7 @@ git clone "$github_base_url/$thingsboard_repo"
 # Workspace
 git clone "$github_base_url/$backend_repo"
 
-cd astrikos-workspace
+cd flow-monorepo
 git submodule update --init --recursive
 
 cp ./astrikos/.env.setup ./astrikos/.env
