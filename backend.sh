@@ -14,4 +14,5 @@ cd flow-monorepo
 git pull origin master
 git submodule update --init --recursive
 make prod-up
+cd astrikos
 make migrate

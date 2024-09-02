@@ -17,6 +17,7 @@ nohup make prod-up-new > thingsboard.log 2>&1 &
 cd
 cd flow-monorepo
 make prod-up
+cd astrikos
 make migrate
 make createsuperuser
 
