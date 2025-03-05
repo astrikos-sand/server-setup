@@ -138,13 +138,15 @@ github_base_url="https://$github_token@github.com"
 git clone "$github_base_url/$thingsboard_repo"
 
 # Workspace
-git clone "$github_base_url/$backend_repo"
-
+cd
+mkdir flow-monorepo
 cd flow-monorepo
-git submodule update --init --recursive
 
-cp ./astrikos/.env.setup ./astrikos/.env
-cp ./astrikos-worker/.env.setup ./astrikos-worker/.env
+git clone https://github.com/astrikos-sand/flow-backend.git
+git clone https://github.com/astrikos-sand/worker.git
+
+cp ./flow-backend/.env.setup ./flow-backend/.env
+cp ./worker/.env.setup ./worker/.env
 
 cd
 

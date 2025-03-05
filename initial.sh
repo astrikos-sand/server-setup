@@ -15,10 +15,15 @@ cd thingsboard
 nohup make prod-up-new > thingsboard.log 2>&1 &
 
 cd
-cd flow-monorepo
-make prod-up
-cd astrikos
+cd flow-monorepo/flow-backend
+docker compose -f setup.docker-compose.yml up --build -d
+
 make migrate
 make createsuperuser
+make seed
+
+cd
+cd flow-monorepo/worker
+docker compose -f setup.docker-compose.yml up --build -d
 
 echo "Services updated"
